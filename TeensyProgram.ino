@@ -1,6 +1,8 @@
 #include <Servo.h>
 #include "linearactuator.h"
 
+#define PIN 7
+
 //Input Parameters
 int armRate = 0;
 LinearActuator l_scoop;
@@ -9,8 +11,7 @@ LinearActuator l_bin;
 void setup() {
   Serial.begin(9600);
   
-  l_attach(l_scoop, 3);
-  l_attach(l_bin, 4);
+  l_attach(l_scoop, 7);
 }
 
 void loop() {
@@ -21,6 +22,8 @@ void loop() {
   
   Serial.print(", Scoop: ");
   Serial.print(l_scoop.dir);
+  
+  l_move(l_scoop);
   
   Serial.print(", Bin: ");
   Serial.println(l_bin.dir);

@@ -29,7 +29,6 @@ void l_move(LinearActuator & l) {
 
 void l_dir(LinearActuator & l, L_Movements dir) {
   l.dir = dir;
-  l_move(l);
 }
 
 #endif
