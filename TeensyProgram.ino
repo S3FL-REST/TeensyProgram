@@ -1,17 +1,34 @@
 #include <Servo.h>
 #include "linearactuator.h"
 
-#define PIN 7
+#define BIN_1A 1
+#define BIN_1B 2
+#define BIN_2A 3
+#define BIN_2B 4
+
+#define EXC_1A 5
+#define EXC_1B 6
+#define EXC_2A 7
+#define EXC_2B 8
+
+#define SCOOP_A 9
+#define SCOOP_B 10
 
 //Input Parameters
 int armRate = 0;
-LinearActuator l_scoop;
-LinearActuator l_bin;
+LinearActuator l_exc_1;
+LinearActuator l_exc_2;
+LinearActuator l_bin_1;
+LinearActuator l_bin_2;
 
 void setup() {
   Serial.begin(9600);
   
-  l_attach(l_scoop, 7);
+  l_attach(l_bin_1, BIN_1A, BIN_1B, false);
+  l_attach(l_bin_2, BIN_2A, BIN_2B, true);
+  
+  l_attach(l_exc_1, EXC_1A, EXC_1B, false);
+  l_attach(l_exc_2, EXC_2A, EXC_2B, true);
 }
 
 void loop() {
@@ -21,12 +38,16 @@ void loop() {
   Serial.print(armRate);
   
   Serial.print(", Scoop: ");
-  Serial.print(l_scoop.dir);
+  Serial.print(l_exc_1.dir);
   
-  l_move(l_scoop);
+  l_move(l_exc_1);
+  l_move(l_exc_2);
   
   Serial.print(", Bin: ");
-  Serial.println(l_bin.dir);
+  Serial.println(l_bin_1.dir);
+  
+  l_move(l_bin_1);
+  l_move(l_bin_2);
 }
 
 //Serial Communication
@@ -99,10 +120,13 @@ void ReadSerial() {
     
     L_Movements dir = static_cast<L_Movements>(atoi(numberInput));
     
-    if (command == 'b')
-      l_dir(l_scoop, dir);
-    else if (command == 's')
-      l_dir(l_bin, dir);
+    if (command == 'b') {
+      l_dir(l_exc_1, dir);
+      l_dir(l_exc_2, dir);
+    } else if (command == 's') {
+      l_dir(l_bin_1, dir);
+      l_dir(l_bin_2, dir);
+    }
   }
   
   if (Serial.available()) ReadSerial();
