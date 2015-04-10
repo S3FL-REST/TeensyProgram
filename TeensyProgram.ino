@@ -66,10 +66,7 @@ b:<0|1|2> --- Collection Bin Linear Actuators
 */
 
 void ClearSerial() {
-  while (Serial.available()) {
-    char c = Serial.read();
-    if (c == '\n' || c == '\r') break;
-  }
+  while (Serial.available()) Serial.read();
 }
 
 void ReadSerial() {
@@ -130,4 +127,5 @@ void ReadSerial() {
   }
   
   if (Serial.available()) ReadSerial();
+  ClearSerial();
 }
